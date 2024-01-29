@@ -1,0 +1,31 @@
+name: Lint
+
+on:
+  pull_request:
+    branches:
+      - release/dev
+
+env:
+  NODE_VERSION: 18
+
+jobs:
+  linting:
+    name: Linting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install NodeJS
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Code Checkout
+        uses: actions/checkout@v2
+
+      - name: Install Dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Code Linting
+        run: yarn lint
+
+      - name: Code Builiding
+        run: yarn build
