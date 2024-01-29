@@ -1,17 +1,27 @@
 import "./App.css";
+import TaskCard from "./components/TaskCard";
+import { tasks, statuses } from "./constants/data";
+import { Status, Task } from "./types";
 
 function App() {
-  const title = "Hello World";
-  const id = "ID-4";
-  const points = 3;
+  const columns = statuses.map((status: Status) => {
+    const tasksInColumn = tasks.filter((task: Task) => task.status === status);
+    return {
+      title: status,
+      tasks: tasksInColumn,
+    };
+  });
 
   return (
-    <div className="border rounded-lg px-2 m-2 bg-gray-50">
-      <div className="text-base font-semibold py-2">{title}</div>
-      <div className="flex justify-between py-2 text-gray-700">
-        <div>{id}</div>
-        <div>{points}</div>
-      </div>
+    <div className="flex divide-x">
+      {columns.map((column) => (
+        <div>
+          <h1 className="text-3xl p-2 capitalize font-bold text-gray-500">{column.title}</h1>
+          {column.tasks.map((task: Task) => (
+            <TaskCard task={task} key={task.id} />
+          ))}
+        </div>
+      ))}
     </div>
   );
 }
